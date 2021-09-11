@@ -1,1 +1,5 @@
 /.idea/
+mxshop-srv/inventory_srv/logs/
+mxshop-srv/order_srv/logs/
+mxshop-srv/order_srv/go.sum
+mxshop-srv/inventory_srv/go.sum
