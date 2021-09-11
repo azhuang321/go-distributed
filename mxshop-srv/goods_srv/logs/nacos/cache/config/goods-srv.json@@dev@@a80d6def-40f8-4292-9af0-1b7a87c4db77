@@ -1,0 +1,15 @@
+{
+    "name":"goods-srv",
+    "tags":["imooc","bobby11","python","srv"],
+    "mysql":{
+        "db":"mxshop",
+        "host":"127.0.0.1",
+        "port":3306,
+        "user":"root",
+        "password":"123123"
+    },
+    "consul":{
+        "host":"127.0.0.1",
+        "port": 8500
+    }
+}
