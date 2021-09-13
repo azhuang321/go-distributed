@@ -12,7 +12,7 @@ import (
 
 func InitConfig() {
 	clientConfig := constant.ClientConfig{
-		NamespaceId:          "74ac63ef-a03a-40e6-b12a-7ca1af81679a", // 如果需要支持多namespace，我们可以场景多个client,它们有不同的NamespaceId。当namespace是public时，此处填空字符串。
+		NamespaceId:          "fdbd132c-8717-4eef-b671-6b01f5201899", // 如果需要支持多namespace，我们可以场景多个client,它们有不同的NamespaceId。当namespace是public时，此处填空字符串。
 		TimeoutMs:            5000,
 		NotLoadCacheAtStart:  true,
 		UpdateCacheWhenEmpty: true,

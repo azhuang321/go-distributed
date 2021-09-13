@@ -28,8 +28,8 @@ func main() {
 
 	g := grpc.NewServer()
 	//注册用户服务
-	userSrv := &handler.InventoryService{}
-	proto.RegisterInventoryServer(g, userSrv)
+	userSrv := &handler.OrderService{}
+	proto.RegisterOrderServer(g, userSrv)
 
 	//注册健康检查服务
 	healthCheckSrv := &handler.HealthCheckSrv{Status: grpc_health_v1.HealthCheckResponse_SERVING, Reason: "running"}
