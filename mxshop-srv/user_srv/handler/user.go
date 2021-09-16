@@ -142,6 +142,44 @@ func (dl *DemoListener) ExecuteLocalTransaction(msg *primitive.Message) primitiv
 	localExecDict[mobile]["resp"] = userInfoResp
 
 	//发送延时消息 取消优惠券
+	rlog.SetLogLevel("error")
+	p, _ := rocketmq.NewProducer(
+		producer.WithNsResolver(primitive.NewPassthroughResolver([]string{"172.18.0.1:9876"})),
+		producer.WithRetry(2),
+	)
+	err = p.Start()
+	if err != nil {
+		fmt.Printf("start producer error: %s", err.Error())
+		os.Exit(1)
+	}
+
+	//生成每笔赠送积分单号
+
+	delayMsg := map[string]string{
+		"couponsId": "1",
+		"mobile":    mobile,
+		"num":       msgs["num"].(string),
+	}
+	delayMsgBody, _ := json.Marshal(delayMsg)
+
+	sendMsg := primitive.NewMessage("test1", delayMsgBody)
+	sendMsg.WithDelayTimeLevel(3)
+	res, err := p.SendSync(context.Background(), sendMsg)
+
+	if err != nil {
+		return primitive.CommitMessageState
+	}
+
+	if res.Status != primitive.SendOK {
+		return primitive.CommitMessageState
+	}
+
+	fmt.Printf("send status:%+v,message_id:%v", res.Status, res.MsgID)
+
+	err = p.Shutdown()
+	if err != nil {
+		fmt.Printf("shutdown producer error: %s", err.Error())
+	}
 
 	return primitive.RollbackMessageState
 }

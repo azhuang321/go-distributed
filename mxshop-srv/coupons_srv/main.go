@@ -1,6 +1,14 @@
 package main
 
 import (
+	"context"
+	"coupons_srv/global"
+	"coupons_srv/handler"
+	"coupons_srv/initialize"
+	"coupons_srv/library"
+	"coupons_srv/proto"
+	"coupons_srv/register"
+	"encoding/json"
 	"fmt"
 	"github.com/apache/rocketmq-client-go/v2"
 	"github.com/apache/rocketmq-client-go/v2/consumer"
@@ -14,13 +22,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-
-	"coupons_srv/global"
-	"coupons_srv/handler"
-	"coupons_srv/initialize"
-	"coupons_srv/library"
-	"coupons_srv/proto"
-	"coupons_srv/register"
 )
 
 func main() {
@@ -80,6 +81,33 @@ func main() {
 		os.Exit(-1)
 	}
 
+	nc, _ := rocketmq.NewPushConsumer(
+		consumer.WithGroupName("testGroup1"),
+		consumer.WithNsResolver(primitive.NewPassthroughResolver([]string{"172.18.0.1:9876"})),
+	)
+
+	err = nc.Subscribe("test1", consumer.MessageSelector{}, func(ctx context.Context, msgs ...*primitive.MessageExt) (consumer.ConsumeResult, error) {
+		for i, _ := range msgs {
+			msgBody := msgs[i].Body
+			msg := make(map[string]interface{})
+			_ = json.Unmarshal(msgBody, &msg)
+			fmt.Println(msg)
+			//todo  消费消息  定时取消未领取优惠券
+
+		}
+
+		return consumer.ConsumeSuccess, nil
+	})
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	// Note: start after subscribe
+	err = nc.Start()
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(-1)
+	}
+
 	//主进程信号退出
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
@@ -93,5 +121,9 @@ func main() {
 	err = c.Shutdown()
 	if err != nil {
 		fmt.Printf("shutdown Consumer error: %s", err.Error())
+	}
+	err = nc.Shutdown()
+	if err != nil {
+		fmt.Printf("Shutdown Consumer error: %s", err.Error())
 	}
 }
