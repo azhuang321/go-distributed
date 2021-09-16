@@ -54,7 +54,7 @@ func (i InventoryService) InvDetail(ctx context.Context, info *proto.GoodsInvInf
 	return &proto.GoodsInvInfo{GoodsId: int32(inv.Goods), Num: int32(inv.Stocks)}, nil
 }
 
-// redis 锁 这里有bug  不同事务到达的时间不一致 在上一次事务未提交前 下一次事务又到达了 那就不会读取到上一次修改但未提交的数据  导致超卖
+// todo redis 锁 这里有bug  不同事务到达的时间不一致 在上一次事务未提交前 下一次事务又到达了 那就不会读取到上一次修改但未提交的数据  导致超卖
 func (i InventoryService) Sell(ctx context.Context, info *proto.SellInfo) (*emptypb.Empty, error) {
 	db, err := database.GetDB()
 	if err != nil {
@@ -89,6 +89,7 @@ func (i InventoryService) Sell(ctx context.Context, info *proto.SellInfo) (*empt
 		redisLock.Release()
 	}
 	tx.Commit()
+	//加锁分开加 ,释放锁 需要在commit之后释放
 	return &emptypb.Empty{}, nil
 }
 

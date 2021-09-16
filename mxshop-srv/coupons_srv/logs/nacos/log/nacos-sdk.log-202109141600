@@ -1,0 +1,9 @@
+2021-09-14T16:33:48.679+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"accessToken":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6MTYzMTYyNjQyOH0.il21bJqUa4Iu-gRzpkIvgwnNigEPh-F13RnKspKjACo","dataId":"user-srv.json","group":"dev","tenant":"ece37e95-241f-4d6f-8ff0-dacbdae6ada8"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>
+2021-09-14T16:33:48.705+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"accessToken":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6MTYzMTYyNjQyOH0.il21bJqUa4Iu-gRzpkIvgwnNigEPh-F13RnKspKjACo","dataId":"user-srv.json","group":"dev","tenant":"ece37e95-241f-4d6f-8ff0-dacbdae6ada8"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>
+2021-09-14T16:33:48.709+0800	[31mERROR[0m	api</v1/cs/configs>,method:<GET>, params:<{"accessToken":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6MTYzMTYyNjQyOH0.il21bJqUa4Iu-gRzpkIvgwnNigEPh-F13RnKspKjACo","dataId":"user-srv.json","group":"dev","tenant":"ece37e95-241f-4d6f-8ff0-dacbdae6ada8"}>, call domain error:<[404] config data not exist
+> , result:<config data not exist
+>

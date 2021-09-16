@@ -31,6 +31,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.3
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gookit/filter v1.1.2 // indirect
+	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/hashicorp/consul/api v1.3.0
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.11 // indirect

@@ -2,6 +2,9 @@ package initialize
 
 import (
 	"fmt"
+	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
+	"google.golang.org/grpc/codes"
+	"time"
 
 	"github.com/hashicorp/consul/api"
 	_ "github.com/mbobakov/grpc-consul-resolver"
@@ -14,11 +17,20 @@ import (
 
 func InitSrvConn() {
 	consulInfo := global.ServerConfig.ConsulInfo
+
+	//增加重试和超时
+	retryOpts := []grpc_retry.CallOption{
+		grpc_retry.WithMax(3),
+		grpc_retry.WithPerRetryTimeout(1 * time.Second),
+		grpc_retry.WithCodes(codes.Unknown, codes.DeadlineExceeded, codes.Unavailable),
+	}
+
 	// 通过负载均衡器 去注册中心拿用户服务
 	userConn, err := grpc.Dial(
 		fmt.Sprintf("consul://%s:%d/%s", consulInfo.Host, consulInfo.Port, global.ServerConfig.UserSrvInfo.Name),
 		grpc.WithInsecure(),
 		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`),
+		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor(retryOpts...)),
 	)
 	if err != nil {
 		zap.S().Errorw("[InitSrvConn] 连接 [user_srv] 失败", "msg", err.Error())

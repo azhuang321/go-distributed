@@ -33,6 +33,7 @@ message CreateUserInfoRequest {
   string nickname = 1;
   string password = 2;
   string mobile = 3;
+  string coupons_num = 4;
 }
 message UpdateUserInfoRequest{
   int32  id = 1;
