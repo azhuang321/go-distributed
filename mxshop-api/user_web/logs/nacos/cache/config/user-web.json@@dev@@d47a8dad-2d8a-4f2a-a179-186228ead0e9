@@ -1,6 +1,6 @@
 {
   "name": "user_web",
-  "port": 8001,
+  "port": 8011,
   "user_srv": {
     "host": "127.0.0.1",
     "port": 8000,

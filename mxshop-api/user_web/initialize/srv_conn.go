@@ -3,6 +3,7 @@ package initialize
 import (
 	"fmt"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
+	"github.com/opentracing/opentracing-go"
 	"google.golang.org/grpc/codes"
 	"time"
 
@@ -13,6 +14,7 @@ import (
 
 	"mxshop_api/user_web/global"
 	"mxshop_api/user_web/proto"
+	"mxshop_api/user_web/utils/otgrpc"
 )
 
 func InitSrvConn() {
@@ -31,6 +33,7 @@ func InitSrvConn() {
 		grpc.WithInsecure(),
 		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy":"round_robin"}`),
 		grpc.WithUnaryInterceptor(grpc_retry.UnaryClientInterceptor(retryOpts...)),
+		grpc.WithUnaryInterceptor(otgrpc.OpenTracingClientInterceptor(opentracing.GlobalTracer())),
 	)
 	if err != nil {
 		zap.S().Errorw("[InitSrvConn] 连接 [user_srv] 失败", "msg", err.Error())

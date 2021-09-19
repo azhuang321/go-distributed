@@ -36,8 +36,8 @@ func main() {
 	healthCheckSrv := &handler.HealthCheckSrv{Status: grpc_health_v1.HealthCheckResponse_SERVING, Reason: "running"}
 	grpc_health_v1.RegisterHealthServer(g, healthCheckSrv)
 
-	//lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", args["host"], args["port"]))
-	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", "0.0.0.0", 8000))
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", args["host"], args["port"]))
+	//lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", "0.0.0.0", 8000))
 	if err != nil {
 		zap.S().Errorf("启动服务失败:%s\n", err.Error())
 		return

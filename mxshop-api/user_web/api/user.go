@@ -3,6 +3,8 @@ package api
 import (
 	"context"
 	"fmt"
+	sentinel "github.com/alibaba/sentinel-golang/api"
+	"github.com/alibaba/sentinel-golang/core/base"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-redis/redis/v8"
 	"mxshop_api/user_web/models"
@@ -30,10 +32,19 @@ func GetUserList(c *gin.Context) {
 	pageSize := c.DefaultQuery("page_size", "10")
 	pageSizeInt, _ := strconv.Atoi(pageSize)
 
-	rsp, err := global.UserSrvClient.GetUserList(context.Background(), &proto.PageInfoRequest{
+	//限流
+	e, b := sentinel.Entry("test", sentinel.WithTrafficType(base.Inbound))
+	if b != nil {
+		errReturn(c, http.StatusTooManyRequests, "请求过快")
+		return
+	}
+
+	//请求服务
+	rsp, err := global.UserSrvClient.GetUserList(context.WithValue(context.Background(), "ginContext", c), &proto.PageInfoRequest{
 		PageNum:  uint32(pageNumInt),
 		PageSize: uint32(pageSizeInt),
 	})
+	e.Exit()
 	if err != nil {
 		zap.S().Errorw("[GetUserList] 请求 [user_srv] 失败", "msg", err.Error())
 		HandleGrpcErrorToHttp(err, c)

@@ -20,6 +20,7 @@ func initFrame() {
 	initialize.InitTranslate()
 	initialize.InitSrvConn()
 	initialize.InitPort()
+	initialize.InitSentinel()
 }
 
 func main() {

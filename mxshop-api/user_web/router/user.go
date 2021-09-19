@@ -9,7 +9,7 @@ import (
 
 func InitUserRouter(Router *gin.RouterGroup) {
 	zap.S().Infof("配置用户相关router")
-	UserRouterGroup := Router.Group("user")
+	UserRouterGroup := Router.Group("user").Use(middlewares.Trace())
 	{
 		UserRouterGroup.GET("list", middlewares.JWTAuth(), middlewares.IsAdminAuth(), api.GetUserList)
 		UserRouterGroup.POST("pwd_login", api.PasswordLogin)
