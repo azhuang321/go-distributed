@@ -88,7 +88,7 @@ message SearchRequest {
 
 生成的数据结构如下，它还包括一些辅助方法以及`GetXXXX`读取字段的方法。
 
-```
+```go
 type SearchRequest struct {
 	Query                string   `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
 	PageNumber           int32    `protobuf:"varint,2,opt,name=page_number,json=pageNumber,proto3" json:"page_number,omitempty"`
@@ -116,13 +116,13 @@ func init() {
 
 首先我们会定义proto的版本。
 
-```
+```protobuf
 syntax = "proto3";
 ```
 
 ### 引入其它proto文件
 
-```
+```protobuf
 import  "other.proto";
 import public "other2.proto";
 import weak "other.proto";
@@ -197,10 +197,10 @@ message NidRepPackedNative {
 字段名、消息名、枚举类型名、map名、服务名等名称首字母必须是字母类型，然后可以是字母、数字或者下划线_。
 
 下面是一个包含各种类型(Scalar Value Types)的proto文件。
-[![img](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/normal-types.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/normal-types.png)
+[![img](../../images/normal-types.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/normal-types.png)
 
 编译成Go文件：`protoc -I=. -I/usr/local/include -I=$(GOPATH)/src --go_out=. types.proto`。
-[![img](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/normal-types-in-go.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/normal-types-in-go.png)
+[![img](../../images/normal-types-in-go.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/normal-types-in-go.png)
 
 proto类型和各语言的对应关系可以参考文档：[Scalar Value Types](https://developers.google.com/protocol-buffers/docs/proto3#scalar)
 
@@ -463,7 +463,7 @@ Go标准库`encoding/binary`有对`varint`处理[方法](https://golang.org/src/
 事实上。Protobuf是编码的键值对，其中键用varint来表示，其中后三位代表wire type。
 
 Protobuf只定义了6种wire类型。
-[![img](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/wire-type.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/wire-type.png)
+[![img](../../images/wire-type.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/wire-type.png)
 
 对于字段比较少(2^4=16)情况，使用一个字节就可以表示key。
 
@@ -497,16 +497,16 @@ p := &Person{
 
 编码后是一个32字节的数据：
 
-[![img](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/msg-data.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/msg-data.png)
+[![img](../../images/msg-data.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/msg-data.png)
 
 第一个字段的类型是字符串(wire type是2), 字段编号是1 (00000001)， 字段编号左移三位再加上wiretype就是`0a`(00001010)。
-[![img](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/field1.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/field1.png)
+[![img](../../images/field1.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/field1.png)
 
 第二个字段的类型是int32(wire type是0), 字段编号是2 (00000010)， 字段编号左移三位再加上wiretype就是`10`(00010000)。
-[![img](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/field2.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/field2.png)
+[![img](../../images/field2.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/field2.png)
 
 第三个字段的类型是字符串(wire type是2), 字段编号是3 (00000011)， 字段编号左移三位再加上wiretype就是`1a`(00011010)。
-[![img](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/field3.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/field3.png)
+[![img](../../images/field3.png)](https://colobu.com/2019/10/03/protobuf-ultimate-tutorial-in-go/field3.png)
 
 为了更有效的处理`sint32`和`sint64`, Protobuf采用ZigZag[编码](https://developers.google.com/protocol-buffers/docs/encoding#signed-integers)。
 
