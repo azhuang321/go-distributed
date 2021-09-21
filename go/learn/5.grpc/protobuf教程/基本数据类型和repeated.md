@@ -64,7 +64,9 @@ option go_package = "./;proto";
 我尝试这样改一下：
 
 ```protobuf
-syntax = "proto3";package protoB;option go_package = ".;protoA";
+syntax = "proto3";
+package protoB;
+option go_package = ".;protoA";
 ```
 
 我看下，生成的go语言包的package到底是啥？打开，生成后的go文件：
