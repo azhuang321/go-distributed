@@ -138,7 +138,7 @@ import weak "other.proto";
 
 在没有为特定语言定义`option xxx_package`的时候，它还可以用来生成特定语言的包名，比如Java package, go package。
 
-```
+```protobuf
 package foo.bar;
 ```
 
@@ -165,7 +165,7 @@ option java_package = "com.example.foo";
 
 自定义的例子：
 
-```
+```protobuf
 option (gogoproto.testgen_all) = true;
 option (gogoproto.populate_all) = true;
 option (gogoproto.benchgen_all) = true;
